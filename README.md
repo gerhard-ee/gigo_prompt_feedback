@@ -20,20 +20,20 @@ cd gigo_prompt_feedback
 
 ## Using the Prompt Feedback Tool
 
-The prompt feedback tool (`prompt_feedback.html`) requires an API key to function. Here's how to get one:
+The prompt feedback tool (`prompt_feedback.html`) requires a Google API key to function. Here's how to get one:
 
-1. Visit [OpenAI's Platform](https://platform.openai.com/)
-2. Sign up or log in to your account
-3. Navigate to the API keys section
-4. Click "Create new secret key"
-5. Copy your API key
-6. In the prompt feedback tool, click the settings icon (⚙️) and paste your API key
+1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Sign in with your Google account
+3. Click "Create API Key"
+4. Copy your API key
+5. In the prompt feedback tool, click the settings icon (⚙️) and paste your API key
 
 ⚠️ **Important Security Notes:**
 - Never share your API key publicly
 - Don't commit your API key to version control
 - The tool stores your API key locally in your browser's storage
-- You can revoke your API key at any time from the OpenAI platform
+- You can manage and revoke your API key at any time from Google AI Studio
+- The API key is used to access Google's Gemini model for prompt analysis
 
 ## Features
 
