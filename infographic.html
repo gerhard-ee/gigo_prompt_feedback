@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIGO: Mastering AI Prompts - Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7FFF7; 
+            color: #1A535C; 
+            scroll-behavior: smooth;
+        }
+        .hero-title { color: #FF6B6B; }
+        .hero-subtitle { color: #4ECDC4; }
+        .section-title { color: #1A535C; border-bottom: 3px solid #4ECDC4; }
+        .card { background-color: #FFFFFF; border-radius: 12px; padding: 24px; box-shadow: 0 10px 20px rgba(26,83,92,0.05), 0 6px 6px rgba(26,83,92,0.07); transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid #e6f0f0; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(26,83,92,0.08), 0 10px 10px rgba(26,83,92,0.1); }
+        .card-title { color: #1A535C; }
+        .text-accent-good { color: #4ECDC4; }
+        .text-accent-bad { color: #FF6B6B; }
+        .text-accent-highlight { color: #FFE66D; }
+        .bg-accent-good { background-color: #4ECDC4; }
+        .bg-accent-bad { background-color: #FF6B6B; }
+        .bg-accent-highlight { background-color: #FFE66D; }
+
+        .funnel-container { display: flex; flex-direction: column; align-items: center; margin: 2rem 0; }
+        .funnel-top { width: 150px; height: 50px; background-color: #45B7D1; clip-path: polygon(0% 0%, 100% 0%, 80% 100%, 20% 100%); display: flex; justify-content: center; align-items: center; color: white; font-weight: 600; }
+        .funnel-body { width: 60px; height: 60px; background-color: #45B7D1; display: flex; justify-content: center; align-items: center; color: white; font-weight: bold; font-size: 1.5rem; }
+        .funnel-stem { width: 40px; height: 30px; background-color: #45B7D1; clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%); }
+        
+        .input-item { padding: 0.5rem 1rem; border-radius: 8px; margin: 0.25rem; display: inline-block; font-size: 0.9rem; animation: float 3s ease-in-out infinite alternate; }
+        .garbage-item { background-color: #FFC3A0; color: #1A535C; } /* Peach */
+        .good-item { background-color: #96E072; color: #1A535C; } /* Light Green */
+
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-5px); } 100% { transform: translateY(0px); } }
+        @keyframes pulse-good { 0%, 100% { transform: scale(1); box-shadow: 0 0 5px #4ECDC4; } 50% { transform: scale(1.05); box-shadow: 0 0 15px #4ECDC4; } }
+        @keyframes pulse-bad { 0%, 100% { transform: scale(1); box-shadow: 0 0 5px #FF6B6B; } 50% { transform: scale(1.05); box-shadow: 0 0 15px #FF6B6B; } }
+        .ai-output-good { animation: pulse-good 2s infinite; border: 2px solid #4ECDC4; }
+        .ai-output-bad { animation: pulse-bad 2s infinite; border: 2px solid #FF6B6B; }
+
+        .sticky-nav { position: sticky; top: 0; z-index: 50; background-color: rgba(247, 255, 247, 0.95); backdrop-filter: blur(8px); padding: 0.75rem 0; box-shadow: 0 2px 4px rgba(26,83,92,0.1); border-bottom: 1px solid #e6f0f0;}
+        .sticky-nav a { color: #1A535C; font-weight: 500; padding: 0.5rem 1rem; border-radius: 6px; transition: background-color 0.3s ease, color 0.3s ease; }
+        .sticky-nav a:hover, .sticky-nav a.active { background-color: #FF6B6B; color: #FFFFFF; }
+
+        .feedback-ui { background-color: #E0F2F7; border: 1px solid #B3E0ED; padding: 1rem; border-radius: 8px; }
+        .feedback-ui textarea { background-color: white; border: 1px solid #45B7D1; padding: 0.5rem; border-radius: 4px; width: 100%; min-height: 60px; }
+        .feedback-ui button { background-color: #FF6B6B; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 500; }
+        .feedback-section { margin-top: 0.5rem; padding: 0.5rem; border-radius: 4px; }
+        .feedback-rating { background-color: #FFE66D; color: #1A535C; }
+        .feedback-strength { background-color: #96E072; color: #1A535C; }
+        .feedback-improvement { background-color: #FFC3A0; color: #1A535C; }
+        .feedback-example { background-color: #C1E8FF; color: #1A535C; font-style: italic; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav id="navbar" class="sticky-nav hidden md:block">
+        <div class="container mx-auto px-6 py-2 flex justify-center space-x-2 lg:space-x-3 overflow-x-auto text-sm">
+            <a href="#gigo-principle">GIGO Explained</a>
+            <a href="#garbage-in">Garbage In</a>
+            <a href="#good-in">Good In</a>
+            <a href="#quality-matters">Why Quality Matters</a>
+            <a href="#crafting-prompts">Crafting Prompts</a>
+            <a href="#you-control">You Control</a>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-6 md:p-10">
+
+        <header id="gigo-principle" class="text-center py-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-3 hero-title">GIGO: Garbage In, Garbage Out</h1>
+            <p class="text-2xl md:text-3xl font-semibold mb-6 hero-subtitle">Mastering Your AI Prompts!</p>
+            <div class="max-w-3xl mx-auto text-lg">
+                <p class="mb-4">Ever heard of GIGO? It's a fundamental concept in computer science and it's CRUCIAL for getting the best out of Artificial Intelligence! The quality of output is determined by the quality of the input.</p>
+                <p class="text-xs text-gray-500">(Source: Common principle in computer science, widely acknowledged since the early days of computing.)</p>
+            </div>
+        </header>
+
+        <section class="py-10">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div id="garbage-in" class="card p-6">
+                    <h2 class="section-title text-2xl mb-4 text-center">"Garbage In" 🗑️➡️ AI Confusion</h2>
+                    <p class="text-center mb-4">When you give an AI vague, unclear, or "garbage" prompts, what do you think happens?</p>
+                    <div class="text-center mb-4">
+                        <h3 class="font-semibold mb-2 card-title text-lg">Examples of "Garbage" Inputs:</h3>
+                        <span class="input-item garbage-item">stuff? 😵‍💫</span>
+                        <span class="input-item garbage-item">um, like...</span>
+                        <span class="input-item garbage-item">vague query ❓</span>
+                        <span class="input-item garbage-item">Tell me things.</span>
+                    </div>
+                    <div class="funnel-container my-6">
+                        <div class="funnel-top">GARBAGE IN</div>
+                        <div class="funnel-body">AI</div>
+                        <div class="funnel-stem"></div>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="font-semibold mb-2 card-title text-lg">Results in "Garbage Output":</h3>
+                        <div class="p-4 rounded-lg ai-output-bad inline-block">
+                            <span class="text-3xl mr-2">🤖💥</span>
+                            <span class="font-mono text-accent-bad">Err: #$%?! NaN</span>
+                        </div>
+                        <p class="mt-3 text-sm">The AI gets confused, struggles to understand, and delivers unhelpful or nonsensical results.</p>
+                        <p class="text-xs text-gray-500 mt-2">(Source: Inspired by the "AI Funnel Animation & Prompt Feedback" application.)</p>
+                    </div>
+                </div>
+
+                <div id="good-in" class="card p-6">
+                    <h2 class="section-title text-2xl mb-4 text-center">"Good Questions In" ✨➡️ AI Clarity!</h2>
+                    <p class="text-center mb-4">But what if you feed the AI clear, specific, and well-thought-out prompts? These are "Good Inputs"!</p>
+                     <div class="text-center mb-4">
+                        <h3 class="font-semibold mb-2 card-title text-lg">Examples of "Good" Inputs:</h3>
+                        <span class="input-item good-item">Specific details 💡</span>
+                        <span class="input-item good-item">Keywords: X, Y, Z</span>
+                        <span class="input-item good-item">Context: Project A</span>
+                        <span class="input-item good-item">Explain quantum computing simply.</span>
+                    </div>
+                    <div class="funnel-container my-6">
+                        <div class="funnel-top bg-accent-good">GOOD INPUTS</div>
+                        <div class="funnel-body bg-accent-good">AI</div>
+                        <div class="funnel-stem bg-accent-good"></div>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="font-semibold mb-2 card-title text-lg">Leads to "Good Output":</h3>
+                         <div class="p-4 rounded-lg ai-output-good inline-block">
+                            <span class="text-3xl mr-2">🤖✨</span>
+                            <span class="font-semibold text-accent-good">Clear Answer! Data: [1,2,3]</span>
+                        </div>
+                        <p class="mt-3 text-sm">With good inputs, the AI understands your request and delivers clear, relevant, and valuable information.</p>
+                        <p class="text-xs text-gray-500 mt-2">(Source: Inspired by the "AI Funnel Animation & Prompt Feedback" application.)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="quality-matters" class="py-12 bg-gray-50 rounded-xl my-10">
+            <h2 class="section-title text-2xl md:text-3xl mb-6 text-center">Why Prompt Quality Matters for AI</h2>
+            <div class="max-w-2xl mx-auto text-center">
+                <p class="mb-6 text-lg">In the world of AI, your prompt is EVERYTHING. It's the instruction, the guide, the map you give the AI.</p>
+                <div class="space-y-4">
+                    <div class="card p-4">
+                        <h3 class="font-semibold text-xl text-accent-good">Clarity is Key 🔑</h3>
+                        <p>Does the AI know *exactly* what you want?</p>
+                    </div>
+                    <div class="card p-4">
+                        <h3 class="font-semibold text-xl text-accent-good">Specificity Rules 🎯</h3>
+                        <p>Vague prompts = Vague answers. Be precise!</p>
+                    </div>
+                    <div class="card p-4">
+                        <h3 class="font-semibold text-xl text-accent-good">Context Counts 📚</h3>
+                        <p>Background information helps the AI tailor its response effectively.</p>
+                    </div>
+                    <div class="card p-4">
+                        <h3 class="font-semibold text-xl text-accent-good">Keywords Guide 🧭</h3>
+                        <p>Help the AI focus on the right topics and concepts.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="crafting-prompts" class="py-12 my-10">
+            <h2 class="section-title text-2xl md:text-3xl mb-6 text-center">How to Craft Better Prompts - Get Feedback!</h2>
+            <div class="max-w-3xl mx-auto">
+                <p class="text-center mb-6 text-lg">So, how can you get better at writing prompts? Practice, and get feedback! Here are some tips:</p>
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="card p-4"><strong>1. Define Your Goal:</strong> What do you want the AI to do? (Summarize, explain, create, compare?)</div>
+                    <div class="card p-4"><strong>2. Be Specific:</strong> Instead of "Tell me about dogs," try "What are three common behavioral issues in Labrador Retrievers and how can they be managed?"</div>
+                    <div class="card p-4"><strong>3. Provide Context:</strong> If asking for a story, specify genre, tone, characters.</div>
+                    <div class="card p-4"><strong>4. Use Keywords:</strong> Help the AI narrow its search and understanding.</div>
+                    <div class="card p-4 md:col-span-2"><strong>5. Iterate & Refine:</strong> Don't expect perfection on the first try. Analyze the output and tweak your prompt.</div>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title text-xl text-center mb-4">Simulated Prompt Feedback UI</h3>
+                    <p class="text-center text-sm mb-4">(Inspired by the app's feedback logic - this is a visual representation)</p>
+                    <div class="feedback-ui space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Your Prompt:</label>
+                            <div class="feedback-ui textarea p-2">e.g., "write story kids space"</div>
+                        </div>
+                        <div class="text-center">
+                            <button>Get Feedback (Simulated)</button>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">AI's Feedback:</h4>
+                            <div class="feedback-section feedback-rating"><strong>Overall Rating:</strong> Fair</div>
+                            <div class="feedback-section feedback-strength"><strong>Strengths:</strong> Clear topic (story, kids, space).</div>
+                            <div class="feedback-section feedback-improvement"><strong>Areas for Improvement:</strong> Needs more detail on characters, plot, tone. Specify length.</div>
+                            <div class="feedback-section feedback-example"><strong>Improved Example:</strong> "Write a short, humorous story (approx. 500 words) for 8-year-old children about a brave squirrel astronaut who accidentally lands on a planet made of cheese."</div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-3 text-center">(Source: Functionality of the "AI Funnel Animation & Prompt Feedback" application.)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="you-control" class="py-12 bg-gray-50 rounded-xl my-10 text-center">
+            <h2 class="section-title text-2xl md:text-3xl mb-6">You Control the Output! 🚀</h2>
+            <div class="max-w-2xl mx-auto">
+                <p class="text-xl mb-6">Remember, with AI, you're the conductor. The quality of the music depends on how well you lead the orchestra.</p>
+                <div class="space-y-3 text-lg font-semibold">
+                    <p class="p-3 bg-accent-good text-white rounded-lg shadow-md">Good Prompts = Powerful AI</p>
+                    <p class="p-3 bg-accent-highlight text-1A535C rounded-lg shadow-md">Your Input Shapes the Output!</p>
+                    <p class="p-3 bg-accent-bad text-white rounded-lg shadow-md">Don't Settle for Garbage - Aim for Gold!</p>
+                </div>
+                <p class="mt-8 text-xl">Master your prompts, and unlock the true power of AI!</p>
+            </div>
+        </section>
+
+        <footer class="text-center py-10 mt-12 border-t border-gray-300">
+            <p class="text-lg font-semibold text-1A535C">GIGO: Mastering AI Prompts</p>
+            <p class="text-sm mt-1 text-accent-good">Infographic SPA - May 2025</p>
+            <p class="text-xs mt-4 text-gray-500">Content inspired by our interactive AI Prompt Helper and the GIGO principle, a cornerstone of computing. No SVG graphics or Mermaid JS were used in the creation of this infographic. All visuals are rendered using HTML and CSS with Unicode characters.</p>
+        </footer>
+    </div>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section[id], header[id]');
+            const navLinks = document.querySelectorAll('#navbar a');
+            let currentSectionId = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - sectionHeight / 2)) { // Adjust sensitivity
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + currentSectionId) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Sentiment Analysis: Bad vs. Good HTML Input</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .container {
+            width: 85%;
+            max-width: 1000px;
+            margin: 30px auto;
+            overflow: hidden;
+            padding: 25px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        header {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: #fff;
+            padding: 25px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 8px 8px 0 0;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            font-weight: 600;
+        }
+        section {
+            margin-bottom: 35px;
+            padding: 25px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+        h2 {
+            color: #0056b3; /* Primary blue */
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 12px;
+            margin-top: 0;
+            font-size: 1.8em;
+        }
+        h3 {
+            color: #495057;
+            margin-top: 25px;
+            font-size: 1.4em;
+        }
+        pre {
+            background-color: #e9ecef;
+            padding: 18px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: 1px solid #ced4da;
+        }
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+        .explanation, .llm-output {
+            margin-top: 18px;
+            padding: 18px;
+            border-left: 5px solid;
+            border-radius: 0 6px 6px 0;
+        }
+        .explanation {
+            border-left-color: #ffc107; /* Amber */
+            background-color: #fff9e6;
+        }
+        .explanation ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+        .explanation li {
+            margin-bottom: 8px;
+        }
+        .llm-output {
+            border-left-color: #17a2b8; /* Info Blue */
+            background-color: #e7f7fa;
+        }
+        .llm-output strong {
+            font-weight: 600;
+        }
+        .bad-html-output .sentiment-value { color: #dc3545; /* Red */ font-weight: bold; }
+        .good-html-output .sentiment-value { color: #28a745; /* Green */ font-weight: bold;}
+        .comparison {
+            background-color: #e2f0d9; /* Light green for conclusion */
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #c3e6cb;
+        }
+        .comparison h2 {
+            color: #155724; /* Dark green */
+            border-bottom-color: #28a745;
+        }
+        .intro-text {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            color: #495057;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>The Impact of HTML Input Quality on LLM Sentiment Analysis</h1>
+    </header>
+
+    <div class="container">
+        <p class="intro-text">This page demonstrates how the quality of HTML input—specifically, "bad" raw scraped content versus "good" cleaned and structured content—can significantly affect the accuracy and reliability of sentiment analysis performed by a Large Language Model (LLM).</p>
+        <p class="intro-text"><strong>Scenario:</strong> We are trying to determine customer sentiment from a support ticket interaction found on a website. The underlying sentiment is <strong>negative</strong>.</p>
+
+        <section id="bad-html">
+            <h2>Case 1: "Bad" Scraped HTML Input</h2>
+            <p>This HTML is messy, contains irrelevant information, ads, potentially hidden text, and ambiguous phrasing—typical of raw scraped content before cleaning.</p>
+
+            <h3>Example "Bad" HTML Snippet (from Scraped Content):</h3>
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="zxx"&gt;
+&lt;head&gt;
+    &lt;title&gt;Customer Portal - My Tickets - Special Offers Today!&lt;/title&gt;
+    &lt;style&gt; .hidden-important { visibility: collapse; height:0; overflow:hidden; } .positive-sounding-class {} &lt;/style&gt;
+&lt;/head&gt;
+&lt;body style="background-color: yellow; color: blue;"&gt; &lt;!-- Jarring styles --&gt;
+    &lt;div class="header-banner"&gt;&lt;h1&gt;WIN A FREE VACATION! CLICK HERE!&lt;/h1&gt;&lt;/div&gt; &lt;!-- Irrelevant Ad --&gt;
+    &lt;div class="main"&gt;
+        &lt;h2&gt;Support Ticket #ABC123XYZ - Status: &lt;span style="color:green;"&gt;RESOLVED&lt;/span&gt; (?)&lt;/h2&gt; &lt;!-- Misleading Status --&gt;
+        &lt;div class="ticket-info"&gt;
+            &lt;p&gt;&lt;strong&gt;Agent (Automated):&lt;/strong&gt; Thank you for reaching out! We value your patience. For more great deals, visit our homepage!&lt;/p&gt; &lt;!-- Polite but unhelpful --&gt;
+            &lt;p class="positive-sounding-class"&gt;This interaction was... an interaction. &lt;span class="hidden-important"&gt;Actually, this was a terrible, unhelpful experience.&lt;/span&gt; The weather today is weather.&lt;/p&gt; &lt;!-- Hidden core sentiment, ambiguous visible text --&gt;
+            &lt;p&gt;My overall feeling is... &lt;s&gt;happy&lt;/s&gt; &lt;strong&gt;fine&lt;/strong&gt;. Everything is fine. &lt;span style="font-size:1px; color:yellow;"&gt;cheap viagra buy now&lt;/span&gt;&lt;/p&gt; &lt;!-- Ambiguous "fine", spam keywords --&gt;
+        &lt;/div&gt;
+        &lt;div class="comment"&gt;&lt;p&gt;&lt;strong&gt;Other user comment (unrelated):&lt;/strong&gt; "I love product Y! Five stars!"&lt;/p&gt;&lt;/div&gt; &lt;!-- Irrelevant positive comment --&gt;
+    &lt;/div&gt;
+    &lt;footer&gt;&amp;copy; 1998 MegaCorp. &lt;!-- TODO: Fix this page --&gt;&lt;/footer&gt; &lt;!-- Outdated, noise --&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+            <div class="explanation">
+                <h4>Why this HTML is problematic for an LLM:</h4>
+                <ul>
+                    <li><strong>Misleading Positive Signals:</strong> "Special Offers Today!", "WIN A FREE VACATION!", green "RESOLVED" status.</li>
+                    <li><strong>Ambiguity & Evasion:</strong> "interaction was an interaction," "feeling is fine."</li>
+                    <li><strong>Hidden Core Sentiment:</strong> Crucial negative feedback ("terrible, unhelpful experience") is in a hidden span, which an LLM might miss or deprioritize.</li>
+                    <li><strong>Irrelevant Content & Noise:</strong> Ads, unrelated positive comments, spam keywords ("cheap viagra"), outdated footer elements, jarring styling.</li>
+                    <li><strong>Conflicting Information:</strong> Polite automated agent response vs. the user's actual (hidden) frustration.</li>
+                </ul>
+            </div>
+
+            <div class="llm-output bad-html-output">
+                <h4>Hypothetical LLM Sentiment Analysis Output (from Bad HTML):</h4>
+                <p><strong>Overall Sentiment:</strong> <span class="sentiment-value">Mixed / Uncertain (Confidence: 40%)</span></p>
+                <p><strong>Key Themes Detected:</strong> Special Offers, Vacation, Resolved Tickets, Product Y, Fine, Patience.</p>
+                <p><strong>Summary:</strong> The system indicates a resolved ticket and the user states things are "fine." Positive language around offers and another product is present. Some ambiguity in user statements is noted. The automated agent response was polite.</p>
+                <p><strong>Verdict:</strong> The LLM struggles to pinpoint the primary sentiment regarding the service ticket due to conflicting signals, hidden information, and irrelevant noise. The output is unreliable for understanding the true user experience.</p>
+            </div>
+        </section>
+
+        <section id="good-html">
+            <h2>Case 2: "Good" Cleaned HTML Input</h2>
+            <p>This HTML has been processed to remove noise and irrelevant information. It focuses directly on the user's feedback regarding the service experience, presenting it in a clear and structured manner.</p>
+
+            <h3>Example "Good" HTML Snippet (Cleaned for Analysis):</h3>
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Customer Feedback - Service Interaction SRV-98765&lt;/title&gt;
+    &lt;style&gt; 
+        body {font-family: Arial, sans-serif; margin: 20px;} 
+        .feedback-container { border: 1px solid #ccc; padding: 15px; border-radius: 5px;}
+        .feedback-header h1 { font-size: 1.5em; color: #c00; }
+        .rating-negative {color: #c00; font-weight: bold;} 
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;article class="feedback-container"&gt;
+        &lt;header class="feedback-header"&gt;
+            &lt;h1&gt;Extremely Unsatisfactory Customer Service Experience&lt;/h1&gt;
+        &lt;/header&gt;
+        &lt;div class="feedback-meta"&gt;
+            &lt;span&gt;&lt;strong&gt;Ticket ID:&lt;/strong&gt; SRV-98765&lt;/span&gt;
+            &lt;span&gt;&lt;strong&gt;User:&lt;/strong&gt; FrustratedClient42&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class="feedback-body"&gt;
+            &lt;p class="rating-negative"&gt;&lt;strong&gt;Overall Rating: 1 out of 5 stars&lt;/strong&gt;&lt;/p&gt;
+            &lt;p&gt;I am writing to express my profound disappointment with the recent customer service. The support I received was generic, automated, and failed to address my core issue.&lt;/p&gt;
+            &lt;p&gt;The entire process was incredibly frustrating and ultimately unhelpful. My issue remains unresolved.&lt;/p&gt;
+            &lt;p&gt;This level of service is unacceptable, and I am severely dissatisfied.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/article&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+            <div class="explanation">
+                <h4>Why this HTML is effective for an LLM:</h4>
+                <ul>
+                    <li><strong>Direct & Unambiguous Language:</strong> Clear statements of dissatisfaction ("Extremely Unsatisfactory," "profound disappointment," "unacceptable," "severely dissatisfied").</li>
+                    <li><strong>Explicit Negative Indicators:</strong> "1 out of 5 stars" rating is prominent and clear.</li>
+                    <li><strong>Focused Content:</strong> All content is directly relevant to the user's service experience. No ads, irrelevant comments, or hidden text.</li>
+                    <li><strong>Clean Structure:</strong> Semantic HTML and clear separation of information aid parsing and understanding.</li>
+                    <li><strong>Consistent Tone:</strong> All elements of the feedback reinforce the negative sentiment.</li>
+                </ul>
+            </div>
+
+            <div class="llm-output good-html-output">
+                <h4>Hypothetical LLM Sentiment Analysis Output (from Good HTML):</h4>
+                <p><strong>Overall Sentiment:</strong> <span class="sentiment-value">Highly Negative (Confidence: 96%)</span></p>
+                <p><strong>Key Themes Detected:</strong> Unsatisfactory Service, Disappointment, Frustration, Unresolved Issue, Unacceptable Support, Low Rating, Dissatisfied.</p>
+                <p><strong>Summary:</strong> The user expresses strong dissatisfaction with the customer service for ticket SRV-98765. They describe the experience as unhelpful, frustrating, and unacceptable, leading to an unresolved issue and a 1-star rating.</p>
+                <p><strong>Verdict:</strong> The LLM accurately identifies the strong negative sentiment and the core reasons for it. The output is reliable and provides actionable insights into the user's experience.</p>
+            </div>
+        </section>
+
+        <section class="comparison">
+            <h2>Conclusion: The Critical Role of Clean Data</h2>
+            <p>This demonstration highlights a fundamental principle in AI and data analysis: the quality of input data directly governs the quality of the output. "Garbage In, Garbage Out" (GIGO) is particularly true for LLMs processing complex, unstructured data like web content.</p>
+            <ul>
+                <li><strong>"Bad" Scraped HTML:</strong> Leads to ambiguous, misleading, or incorrect sentiment detection. The LLM struggles to differentiate relevant feedback from surrounding noise, manipulative elements, and hidden information. This results in low-confidence, unreliable insights.</li>
+                <li><strong>"Good" Cleaned HTML:</strong> Enables the LLM to precisely identify and categorize the sentiment with high confidence. By providing focused, unambiguous, and relevant data, we empower the LLM to deliver valuable and trustworthy insights.</li>
+            </ul>
+            <p><strong>Key Takeaway:</strong> Effective data preprocessing and cleaning are not just optional steps but essential prerequisites when using LLMs for tasks like sentiment analysis on web-scraped content. Investing time in preparing clean, relevant input data is crucial for obtaining meaningful and actionable results.</p>
+        </section>
+    </div>
+</body>
+</html>
+```
+
+This webpage should clearly illustrate the points we've discussed. You can save this code as an `.html` file and open it in a browser to view the demonstrati
