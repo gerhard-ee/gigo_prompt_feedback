@@ -12,7 +12,7 @@ This project provides a collection of tools and examples for evaluating and impr
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/gigo_prompt_feedback.git
+git clone https://github.com/gerhard-ee/gigo_prompt_feedback.git
 cd gigo_prompt_feedback
 ```
 
